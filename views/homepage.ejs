@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoilerPlate</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <title>KML Click Capture Sample</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            border: thin solid #333;
+        }
+
+        #capture {
+            display: none;
+            /* Hide capture since we want the map to fill the screen */
+        }
+    </style>
+</head>
+
+<body>
+    <%- include ('./partials/navbar') %>
+        <div id="map"></div>
+        <div id="capture"></div>
+        <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4_JTrL9065teob_rOWLPl3XF1ZOnxRxg&callback=initMap">
+            </script>
+        <script>
+            var map;
+            // var src = 'https://developers.google.com/maps/documentation/javascript/examples/kml/westcampus.kml';
+            // var src = '../output.kml';
+            // var src = process.env.Kmlfile;
+            var src = 'https://drive.usercontent.google.com/u/0/uc?id=1yYr8utd-zTHCYwGbRsbGWFnEWnqKuC1o&export=download ';
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: new google.maps.LatLng(-19.257753, 146.823688),
+                    zoom: 2,
+                    mapTypeId: 'terrain'
+                });
+
+                var kmlLayer = new google.maps.KmlLayer(src, {
+                    suppressInfoWindows: true,
+                    preserveViewport: false,
+                    map: map
+                });
+                kmlLayer.addListener('click', function (event) {
+                    var content = event.featureData.infoWindowHtml;
+                    var testimonial = document.getElementById('capture');
+                    testimonial.innerHTML = content;
+                });
+            }
+        </script>
+
+</body>
+
+</html>
